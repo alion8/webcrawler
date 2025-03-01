@@ -14,7 +14,7 @@ A modular web crawler with Pinecone vector database integration.
    # Pinecone configuration
    PINECONE_API_KEY=your_api_key
    PINECONE_ENVIRONMENT=your_environment
-   PINECONE_INDEX_NAME=your_index_name
+   PINECONE_INDEX_NAME=your_default_index_name
    ```
 
 ## Running the Web Crawler
@@ -26,10 +26,11 @@ python -m src.utils.simple_crawler
 ```
 
 This will:
-1. Prompt you for the website URL to crawl
-2. Ask if you want to use the website's sitemap
-3. Ask if you want to specify additional URLs manually
-4. Start crawling immediately
+1. Prompt you for the Pinecone index name to use (with default from .env)
+2. Prompt you for the website URL to crawl
+3. Ask if you want to use the website's sitemap
+4. Ask if you want to specify additional URLs manually
+5. Start crawling immediately
 
 ### Advanced Configuration
 If you need more control over the configuration:

@@ -53,20 +53,26 @@ def run_crawler():
     # Check if required API keys are present
     api_key = os.getenv("PINECONE_API_KEY")
     environment = os.getenv("PINECONE_ENVIRONMENT")
-    index_name = os.getenv("PINECONE_INDEX_NAME")
+    default_index_name = os.getenv("PINECONE_INDEX_NAME")
     
-    if not all([api_key, environment, index_name]):
+    if not all([api_key, environment]):
         print("Error: Missing Pinecone API configuration in .env file.")
         print("Please make sure you have the following variables set:")
         print("  - PINECONE_API_KEY")
         print("  - PINECONE_ENVIRONMENT")
-        print("  - PINECONE_INDEX_NAME")
         input("\nPress Enter to exit...")
         return
     
     # Get crawler settings from user
     clear_screen()
     print_header("Web Crawler Quick Start")
+    
+    # Get the Pinecone index name
+    index_name = get_input("Enter the Pinecone index name to use", default_index_name)
+    if not index_name:
+        print("Error: Index name cannot be empty.")
+        input("\nPress Enter to exit...")
+        return
     
     # Get the start URL
     start_url = get_input("Enter the website URL to crawl (e.g., https://example.com)")
@@ -96,6 +102,7 @@ def run_crawler():
             use_manual_urls = False
     
     # Set environment variables for the crawler
+    os.environ["PINECONE_INDEX_NAME"] = index_name
     os.environ["START_URL"] = start_url
     os.environ["USE_START_URL"] = str(use_start_url).lower()
     os.environ["USE_SITEMAP"] = str(use_sitemap).lower()
@@ -105,6 +112,7 @@ def run_crawler():
     
     # Run the crawler
     print_header("Starting Web Crawler")
+    print(f"Using Pinecone index: {index_name}")
     print(f"Crawling: {start_url}")
     if use_sitemap:
         print(f"Using sitemap: {sitemap_url}")

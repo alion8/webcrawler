@@ -9,7 +9,17 @@ A modular web crawler with Pinecone vector database integration.
    ```
    pip install -r requirements.txt
    ```
-3. Create a `.env` file in the root directory with the following variables:
+3. Configure the application using one of these methods:
+   
+   **Option 1: Use the Configuration Wizard (Recommended)**
+   
+   Run the configuration wizard to interactively set up your environment:
+   - On Windows: Double-click `configure.bat` or run `python configure.py`
+   - On Linux/Mac: Run `./configure.py`
+   
+   **Option 2: Manual Configuration**
+   
+   Create a `.env` file in the root directory with the following variables:
    ```
    # Pinecone configuration
    PINECONE_API_KEY=your_api_key
@@ -66,8 +76,10 @@ WebCrawler/
 ├── .env                  # Environment variables
 ├── main.py               # Main entry point
 ├── cleanup.py            # Cleanup entry point
+├── configure.py          # Configuration wizard entry point
 ├── run_crawler.bat       # Windows batch file for running the crawler
 ├── run_cleanup.bat       # Windows batch file for running the cleanup utility
+├── configure.bat         # Windows batch file for running the configuration wizard
 ├── requirements.txt      # Python dependencies
 ├── src/
 │   ├── config/           # Configuration modules
@@ -75,6 +87,8 @@ WebCrawler/
 │   ├── indexers/         # Pinecone indexing modules
 │   ├── processors/       # Content processing modules
 │   ├── utils/            # Utility modules
+│   │   ├── config_wizard.py  # Configuration wizard implementation
+│   │   └── ...
 │   ├── main.py           # Main execution logic
 │   └── cleanup.py        # Cleanup utility logic
 └── logs/                 # Log files

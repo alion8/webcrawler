@@ -1,0 +1,3 @@
+@echo off
+echo Starting Web Crawler...
+python -m src.utils.simple_crawler 

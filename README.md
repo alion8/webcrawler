@@ -33,17 +33,7 @@ This will:
 5. Start crawling immediately
 
 ### Advanced Configuration
-If you need more control over the configuration:
-
-**Option 1: Use the Configuration Wizard**
-   
-Run the configuration wizard to interactively set up your environment:
-- On Windows: Double-click `configure.bat` or run `python configure.py`
-- On Linux/Mac: Run `./configure.py`
-   
-**Option 2: Manual Configuration**
-   
-Edit the `.env` file directly with all configuration options:
+If you need more control over the configuration, edit the `.env` file directly with all configuration options:
 ```
 # Crawler configuration
 START_URL=https://example.com
@@ -61,22 +51,17 @@ SCAN_BATCH_SIZE=1000
 ```
 
 Then run:
-- On Windows: Double-click `run_crawler.bat` or run `python main.py`
-- On Linux/Mac: Run `./main.py`
+```
+python main.py
+```
 
 ## Running the Cleanup Utility
 
 The cleanup utility scans the Pinecone index for bad vectors and allows you to delete them.
 
-### On Windows:
-Double-click the `run_cleanup.bat` file or run the following command in a terminal:
+Double-click the `run_cleanup.bat` file or run:
 ```
 python cleanup.py
-```
-
-### On Linux/Mac:
-```
-./cleanup.py
 ```
 
 ## Project Structure
@@ -87,10 +72,7 @@ WebCrawler/
 ├── main.py               # Main entry point
 ├── cleanup.py            # Cleanup entry point
 ├── crawl.bat             # Quick start batch file for running the crawler
-├── configure.py          # Configuration wizard entry point
-├── run_crawler.bat       # Windows batch file for running the crawler with .env config
 ├── run_cleanup.bat       # Windows batch file for running the cleanup utility
-├── configure.bat         # Windows batch file for running the configuration wizard
 ├── requirements.txt      # Python dependencies
 ├── src/
 │   ├── config/           # Configuration modules
@@ -98,7 +80,6 @@ WebCrawler/
 │   ├── indexers/         # Pinecone indexing modules
 │   ├── processors/       # Content processing modules
 │   ├── utils/            # Utility modules
-│   │   ├── config_wizard.py  # Configuration wizard implementation
 │   │   ├── simple_crawler.py # Simplified crawler with minimal input
 │   │   └── ...
 │   ├── main.py           # Main execution logic

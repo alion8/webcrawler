@@ -74,32 +74,59 @@ def run_crawler():
         input("\nPress Enter to exit...")
         return
     
-    # Get the start URL
-    start_url = get_input("Enter the website URL to crawl (e.g., https://example.com)")
-    if not start_url:
-        print("Error: URL cannot be empty.")
-        input("\nPress Enter to exit...")
-        return
+    # Ask for crawling method preferences first
+    use_sitemap = get_boolean_input("Do you want to use a sitemap?", False)
+    use_manual_urls = get_boolean_input("Do you want to specify URLs manually?", False)
     
-    # Get crawling method preferences
-    use_start_url = True  # Always use the start URL
-    use_sitemap = get_boolean_input("Do you want to use the website's sitemap?", False)
+    # Get the start URL only if not using sitemap or manual URLs
+    start_url = ""
+    use_start_url = False
     
+    if not use_sitemap and not use_manual_urls:
+        start_url = get_input("Enter the website URL to crawl (e.g., https://example.com)")
+        if not start_url:
+            print("Error: URL cannot be empty when not using sitemap or manual URLs.")
+            input("\nPress Enter to exit...")
+            return
+        use_start_url = True
+    
+    # Get sitemap URL if using sitemap
     sitemap_url = ""
     if use_sitemap:
         sitemap_url = get_input("Enter the sitemap URL (e.g., https://example.com/sitemap.xml)")
         if not sitemap_url:
             print("Warning: Sitemap URL is empty. Sitemap crawling will be disabled.")
             use_sitemap = False
+            # If sitemap was the only method and it's now disabled, require a website URL
+            if not use_start_url and not use_manual_urls:
+                start_url = get_input("Enter the website URL to crawl (e.g., https://example.com)")
+                if not start_url:
+                    print("Error: You must provide at least one method to crawl.")
+                    input("\nPress Enter to exit...")
+                    return
+                use_start_url = True
     
-    use_manual_urls = get_boolean_input("Do you want to specify additional URLs manually?", False)
-    
+    # Get manual URLs if using manual URLs
     manual_urls = ""
     if use_manual_urls:
         manual_urls = get_input("Enter comma-separated URLs (e.g., https://example.com/page1,https://example.com/page2)")
         if not manual_urls:
             print("Warning: No manual URLs provided. Manual URL crawling will be disabled.")
             use_manual_urls = False
+            # If manual URLs was the only method and it's now disabled, require a website URL
+            if not use_start_url and not use_sitemap:
+                start_url = get_input("Enter the website URL to crawl (e.g., https://example.com)")
+                if not start_url:
+                    print("Error: You must provide at least one method to crawl.")
+                    input("\nPress Enter to exit...")
+                    return
+                use_start_url = True
+    
+    # Ensure at least one crawling method is enabled
+    if not use_start_url and not use_sitemap and not use_manual_urls:
+        print("Error: You must enable at least one crawling method.")
+        input("\nPress Enter to exit...")
+        return
     
     # Set environment variables for the crawler
     os.environ["PINECONE_INDEX_NAME"] = index_name
@@ -113,7 +140,8 @@ def run_crawler():
     # Run the crawler
     print_header("Starting Web Crawler")
     print(f"Using Pinecone index: {index_name}")
-    print(f"Crawling: {start_url}")
+    if use_start_url:
+        print(f"Crawling website: {start_url}")
     if use_sitemap:
         print(f"Using sitemap: {sitemap_url}")
     if use_manual_urls:
